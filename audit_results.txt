@@ -1,0 +1,1021 @@
+This text file contains audit results for SQL queries in application/models/*
+Sample data: Each table has 100,000 rows.
+
+
+[Query Performances]
+
+========================================================
+[File name]: account_group.php
+[Function name]: getGroupAccountList
+[Duration]: 0.0140785s
+[Raw query]:
+Line 0:  SELECT *
+Line 1:  FROM `account_group` as `AG`
+Line 2:  JOIN `account_group_mapping` as `AGM` ON `AG`.`id` = `AGM`.`account_group_id`
+Line 3:  WHERE `AG`.`id` IN ('')
+Line 4: 
+[Query execution result]:
+	[Table: None]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => None
+		[partitions] => None
+		[type] => None
+		[possible_keys] => None
+		[key] => None
+		[key_len] => None
+		[ref] => None
+		[rows] => None
+		[filtered] => None
+		[Extra] => no matching row in const table
+[Suggestions]:
+None
+========================================================
+========================================================
+[File name]: account_group.php
+[Function name]: getGroupUsedAccountNo
+[Duration]: 0.00252875s
+[Raw query]:
+Line 0:  SELECT GROUP_CONCAT(AG.id SEPARATOR ', ') as group_id
+Line 1:  FROM `account_group` as `AG`
+Line 2:  LEFT JOIN `account_group_mapping` as `AGM` ON `AG`.`id` = `AGM`.`account_group_id`
+Line 3:  WHERE `AGM`.`account_number` IN ('')
+Line 4:  GROUP BY `AGM`.`account_number`
+Line 5: 
+[Query execution result]:
+	[Table: account_group_mapping]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => AGM
+		[partitions] => None
+		[type] => ref
+		[possible_keys] => account_group_id,account_number
+		[key] => account_number
+		[key_len] => 5
+		[ref] => const
+		[rows] => 1
+		[filtered] => 100.0
+		[Extra] => Using where
+	[Table: account_group]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => AG
+		[partitions] => None
+		[type] => eq_ref
+		[possible_keys] => PRIMARY
+		[key] => PRIMARY
+		[key_len] => 4
+		[ref] => connectcare.AGM.account_group_id
+		[rows] => 1
+		[filtered] => 100.0
+		[Extra] => Using index
+[Suggestions]:
+	[Table: account_group_mapping]:
+		[Passed]:
+			Indexed key account_number used for table account_group_mapping -> type: ref
+		[Warning]:
+			FUll SCAN detected on table account_group_mapping -> type: ref
+	[Table: account_group]:
+		[Passed]:
+			No full scan on table account_group -> type: eq_ref
+			Indexed key PRIMARY used for table account_group -> type: eq_ref
+		[Warning]:
+
+========================================================
+========================================================
+[File name]: account_group.php
+[Function name]: getgroupList
+[Duration]: 0.000463s
+[Raw query]:
+Line 0:  SELECT `ag`.*, `agm`.`account_number`
+Line 1:  FROM `account_group` `ag`
+Line 2:  LEFT JOIN `account_group_mapping` as `agm` ON `ag`.`id` = `agm`.`account_group_id`
+Line 3:  WHERE `agm`.`account_number` = ''
+Line 4:  GROUP BY `ag`.`id`
+Line 5: 
+[Query execution result]:
+	[Table: account_group_mapping]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => agm
+		[partitions] => None
+		[type] => ref
+		[possible_keys] => account_group_id,account_number
+		[key] => account_number
+		[key_len] => 5
+		[ref] => const
+		[rows] => 1
+		[filtered] => 100.0
+		[Extra] => Using where; Using temporary
+	[Table: account_group]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => ag
+		[partitions] => None
+		[type] => eq_ref
+		[possible_keys] => PRIMARY,group_type
+		[key] => PRIMARY
+		[key_len] => 4
+		[ref] => connectcare.agm.account_group_id
+		[rows] => 1
+		[filtered] => 100.0
+		[Extra] => None
+[Suggestions]:
+	[Table: account_group_mapping]:
+		[Passed]:
+			Indexed key account_number used for table account_group_mapping -> type: ref
+		[Warning]:
+			FUll SCAN detected on table account_group_mapping -> type: ref
+	[Table: account_group]:
+		[Passed]:
+			No full scan on table account_group -> type: eq_ref
+			Indexed key PRIMARY used for table account_group -> type: eq_ref
+		[Warning]:
+
+========================================================
+========================================================
+[File name]: account_group.php
+[Function name]: getGroupAdminCount
+[Duration]: 0.00045225s
+[Raw query]:
+Line 0:  SELECT *
+Line 1:  FROM `account_group_mapping` as `agm`
+Line 2:  WHERE `agm`.`account_number` = '12233'
+Line 3: 
+[Query execution result]:
+	[Table: account_group_mapping]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => agm
+		[partitions] => None
+		[type] => ref
+		[possible_keys] => account_number
+		[key] => account_number
+		[key_len] => 5
+		[ref] => const
+		[rows] => 1
+		[filtered] => 100.0
+		[Extra] => None
+[Suggestions]:
+	[Table: account_group_mapping]:
+		[Passed]:
+			Indexed key account_number used for table account_group_mapping -> type: ref
+		[Warning]:
+			FUll SCAN detected on table account_group_mapping -> type: ref
+
+========================================================
+========================================================
+[File name]: Alarmcontactmodel.php
+[Function name]: getAlarmContactByCustomer
+[Duration]: 0.02259775s
+[Raw query]:
+Line 0:  SELECT `ac`.`id_user`, `ac`.`id_customer`, `u`.`email`, `u`.`first_name`, `u`.`last_name`, `u`.`phone`, `u`.`title`
+Line 1:  FROM `alarm_contacts` as `ac`
+Line 2:  LEFT JOIN `users` as `u` ON `u`.`id` = `ac`.`id_user`
+Line 3:  WHERE `ac`.`id_customer` = '\'1\''
+Line 4:  AND `ac`.`is_delete` = '0'
+Line 5: 
+[Query execution result]:
+	[Table: alarm_contacts]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => ac
+		[partitions] => None
+		[type] => ALL
+		[possible_keys] => None
+		[key] => None
+		[key_len] => None
+		[ref] => None
+		[rows] => 97881
+		[filtered] => 1.0
+		[Extra] => Using where
+	[Table: users]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => u
+		[partitions] => None
+		[type] => eq_ref
+		[possible_keys] => PRIMARY
+		[key] => PRIMARY
+		[key_len] => 4
+		[ref] => connectcare.ac.id_user
+		[rows] => 1
+		[filtered] => 100.0
+		[Extra] => Using where
+[Suggestions]:
+	[Table: alarm_contacts]:
+		[Passed]:
+		[Warning]:
+			FUll SCAN detected on table alarm_contacts -> type: ALL
+	[Table: users]:
+		[Passed]:
+			No full scan on table users -> type: eq_ref
+			Indexed key PRIMARY used for table users -> type: eq_ref
+		[Warning]:
+
+========================================================
+========================================================
+[File name]: Alarmcontactmodel.php
+[Function name]: getUsersNotInAlarmContact
+[Duration]: 0.01250775s
+[Raw query]:
+Line 0:  SELECT `u`.`id`, `u`.`email`, `u`.`first_name`, `u`.`last_name`, `u`.`phone`, `u`.`title`
+Line 1:  FROM `users` as `u`
+Line 2:  WHERE `u`.`id` NOT IN (select id_user FROM alarm_contacts as ac WHERE id_customer = -1)
+Line 3: 
+[Query execution result]:
+	[Table: users]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => u
+		[partitions] => None
+		[type] => ALL
+		[possible_keys] => None
+		[key] => None
+		[key_len] => None
+		[ref] => None
+		[rows] => 83753
+		[filtered] => 100.0
+		[Extra] => None
+	[Table: <subquery2>]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => <subquery2>
+		[partitions] => None
+		[type] => eq_ref
+		[possible_keys] => <auto_distinct_key>
+		[key] => <auto_distinct_key>
+		[key_len] => 9
+		[ref] => connectcare.u.id
+		[rows] => 1
+		[filtered] => 100.0
+		[Extra] => Using where; Not exists
+	[Table: None]:
+		[id] => 2
+		[select_type] => MATERIALIZED
+		[table] => ac
+		[partitions] => None
+		[type] => ALL
+		[possible_keys] => None
+		[key] => None
+		[key_len] => None
+		[ref] => None
+		[rows] => 97881
+		[filtered] => 100.0
+		[Extra] => Using where
+[Suggestions]:
+	[Table: users]:
+		[Passed]:
+		[Warning]:
+			FUll SCAN detected on table users -> type: ALL
+	[Table: <subquery2>]:
+		[Passed]:
+			No full scan on table <subquery2> -> type: eq_ref
+			Indexed key <auto_distinct_key> used for table <subquery2> -> type: eq_ref
+		[Warning]:
+	[Table: None]:
+		[Passed]:
+		[Warning]:
+			FUll SCAN detected on table None -> type: ALL
+
+========================================================
+========================================================
+[File name]: Alarmcontactmodel.php
+[Function name]: getUsersForAlarmContact
+[Duration]: 0.00318625s
+[Raw query]:
+Line 0:  SELECT `ac`.`user_type`, `ac`.`shift`, `ac`.`departments`, `u`.`id`, `u`.`email`, `u`.`first_name`, `u`.`last_name`, `u`.`phone`, `u`.`title`, `u`.`user_role`
+Line 1:  FROM `users` as `u`
+Line 2:  LEFT JOIN `alarm_contacts` as `ac` ON `ac`.`id_user` = `u`.`id`
+Line 3:  WHERE `ac`.`id_customer` IN('')
+Line 4: 
+[Query execution result]:
+	[Table: alarm_contacts]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => ac
+		[partitions] => None
+		[type] => ALL
+		[possible_keys] => None
+		[key] => None
+		[key_len] => None
+		[ref] => None
+		[rows] => 97881
+		[filtered] => 10.0
+		[Extra] => Using where
+	[Table: users]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => u
+		[partitions] => None
+		[type] => eq_ref
+		[possible_keys] => PRIMARY
+		[key] => PRIMARY
+		[key_len] => 4
+		[ref] => connectcare.ac.id_user
+		[rows] => 1
+		[filtered] => 100.0
+		[Extra] => Using where
+[Suggestions]:
+	[Table: alarm_contacts]:
+		[Passed]:
+		[Warning]:
+			FUll SCAN detected on table alarm_contacts -> type: ALL
+	[Table: users]:
+		[Passed]:
+			No full scan on table users -> type: eq_ref
+			Indexed key PRIMARY used for table users -> type: eq_ref
+		[Warning]:
+
+========================================================
+========================================================
+[File name]: Alarmcontactmodel.php
+[Function name]: removeAlarmContact
+[Duration]: 0.006886s
+[Raw query]:
+Line 0:  UPDATE `alarm_contacts` SET `is_delete` = 1, `updated_at` = '2023-06-14 18:29:35'
+Line 1:  WHERE `id_user` = ''
+Line 2: 
+[Query execution result]:
+	[Table: alarm_contacts]:
+		[id] => 1
+		[select_type] => UPDATE
+		[table] => alarm_contacts
+		[partitions] => None
+		[type] => index
+		[possible_keys] => None
+		[key] => PRIMARY
+		[key_len] => 8
+		[ref] => None
+		[rows] => 97881
+		[filtered] => 100.0
+		[Extra] => Using where
+[Suggestions]:
+	[Table: alarm_contacts]:
+		[Passed]:
+		[Warning]:
+			FUll SCAN detected on table alarm_contacts -> type: index
+
+========================================================
+========================================================
+[File name]: Alarmcontactmodel.php
+[Function name]: addAlarmContact
+[Duration]: 0.001987s
+[Raw query]:
+Line 0:  SELECT COUNT(*) AS `numrows`
+Line 1:  FROM `alarm_contacts`
+Line 2:  WHERE `id_user` IS NULL
+Line 3:  AND `id_customer` IS NULL
+Line 4: 
+[Query execution result]:
+	[Table: None]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => None
+		[partitions] => None
+		[type] => None
+		[possible_keys] => None
+		[key] => None
+		[key_len] => None
+		[ref] => None
+		[rows] => None
+		[filtered] => None
+		[Extra] => Impossible WHERE
+[Suggestions]:
+None
+========================================================
+========================================================
+[File name]: Alarmcontactmodel.php
+[Function name]: updateAlarmContact
+[Duration]: 0.00041975s
+[Raw query]:
+Line 0:  UPDATE `alarm_contacts` SET `shift` = '1'
+Line 1:  WHERE `id` = ''
+Line 2: 
+[Query execution result]:
+	[Table: alarm_contacts]:
+		[id] => 1
+		[select_type] => UPDATE
+		[table] => alarm_contacts
+		[partitions] => None
+		[type] => range
+		[possible_keys] => PRIMARY
+		[key] => PRIMARY
+		[key_len] => 8
+		[ref] => const
+		[rows] => 1
+		[filtered] => 100.0
+		[Extra] => Using where
+[Suggestions]:
+	[Table: alarm_contacts]:
+		[Passed]:
+			Indexed key PRIMARY used for table alarm_contacts -> type: range
+		[Warning]:
+			FUll SCAN detected on table alarm_contacts -> type: range
+
+========================================================
+========================================================
+[File name]: Alarmcontactmodel.php
+[Function name]: getAlarmContactForDevice
+[Duration]: 0.025073s
+[Raw query]:
+Line 0:  SELECT `ac`.*, `u`.`id`, `u`.`email`, `u`.`first_name`, `u`.`last_name`, `u`.`phone`, `u`.`title`
+Line 1:  FROM `alarm_contacts` as `ac`
+Line 2:  LEFT JOIN `users` as `u` ON `u`.`id` = `ac`.`id_user`
+Line 3: 
+[Query execution result]:
+	[Table: alarm_contacts]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => ac
+		[partitions] => None
+		[type] => ALL
+		[possible_keys] => None
+		[key] => None
+		[key_len] => None
+		[ref] => None
+		[rows] => 97881
+		[filtered] => 100.0
+		[Extra] => None
+	[Table: users]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => u
+		[partitions] => None
+		[type] => eq_ref
+		[possible_keys] => PRIMARY
+		[key] => PRIMARY
+		[key_len] => 4
+		[ref] => connectcare.ac.id_user
+		[rows] => 1
+		[filtered] => 100.0
+		[Extra] => Using where
+[Suggestions]:
+	[Table: alarm_contacts]:
+		[Passed]:
+		[Warning]:
+			FUll SCAN detected on table alarm_contacts -> type: ALL
+	[Table: users]:
+		[Passed]:
+			No full scan on table users -> type: eq_ref
+			Indexed key PRIMARY used for table users -> type: eq_ref
+		[Warning]:
+
+========================================================
+========================================================
+[File name]: Alarmcontactmodel.php
+[Function name]: ListAllAlarmContacts
+[Duration]: 0.03852025s
+[Raw query]:
+Line 0:  SELECT `ac`.`id` as `contactid`, `ac`.`user_type`, `ac`.`shift`, `ac`.`departments` as `department`, `us`.`email`, `us`.`first_name`, `us`.`last_name`, `c`.`account_number`, `us`.`district`, `us`.`zone`, `us`.`country`, `us`.`title` as `usertitle`, `us`.`phone`
+Line 1:  FROM `alarm_contacts` `ac`
+Line 2:  INNER JOIN `users` `us` ON `ac`.`id_user`=`us`.`id`
+Line 3:  LEFT JOIN `customers` `c` ON `ac`.`id_customer`=`c`.`id`
+Line 4:  WHERE `ac`.`updated_at` >= '2000-08-17 04:47:50'
+Line 5: 
+[Query execution result]:
+	[Table: alarm_contacts]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => ac
+		[partitions] => None
+		[type] => ALL
+		[possible_keys] => None
+		[key] => None
+		[key_len] => None
+		[ref] => None
+		[rows] => 97881
+		[filtered] => 33.33
+		[Extra] => Using where
+	[Table: customers]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => c
+		[partitions] => None
+		[type] => eq_ref
+		[possible_keys] => PRIMARY
+		[key] => PRIMARY
+		[key_len] => 4
+		[ref] => connectcare.ac.id_customer
+		[rows] => 1
+		[filtered] => 100.0
+		[Extra] => Using where
+	[Table: users]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => us
+		[partitions] => None
+		[type] => eq_ref
+		[possible_keys] => PRIMARY
+		[key] => PRIMARY
+		[key_len] => 4
+		[ref] => connectcare.ac.id_user
+		[rows] => 1
+		[filtered] => 100.0
+		[Extra] => Using where
+[Suggestions]:
+	[Table: alarm_contacts]:
+		[Passed]:
+		[Warning]:
+			FUll SCAN detected on table alarm_contacts -> type: ALL
+	[Table: customers]:
+		[Passed]:
+			No full scan on table customers -> type: eq_ref
+			Indexed key PRIMARY used for table customers -> type: eq_ref
+		[Warning]:
+	[Table: users]:
+		[Passed]:
+			No full scan on table users -> type: eq_ref
+			Indexed key PRIMARY used for table users -> type: eq_ref
+		[Warning]:
+
+========================================================
+========================================================
+[File name]: Billableideasmodel.php
+[Function name]: getNumberOfBillableIdeas
+[Duration]: 0.00520225s
+[Raw query]:
+Line 0:  SELECT COUNT(*) AS `numrows`
+Line 1:  FROM `billable_ideas` as `bi`
+Line 2:  JOIN `users` as `u` ON `u`.`id` = `bi`.`id_user`
+Line 3:  WHERE DATE(bi.created_at) >= '2000/08/17'
+Line 4:  AND DATE(bi.created_at) <= '2010/08/17'
+Line 5: 
+[Query execution result]:
+	[Table: billable_ideas]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => bi
+		[partitions] => None
+		[type] => ALL
+		[possible_keys] => None
+		[key] => None
+		[key_len] => None
+		[ref] => None
+		[rows] => 95164
+		[filtered] => 100.0
+		[Extra] => Using where
+	[Table: users]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => u
+		[partitions] => None
+		[type] => eq_ref
+		[possible_keys] => PRIMARY
+		[key] => PRIMARY
+		[key_len] => 4
+		[ref] => connectcare.bi.id_user
+		[rows] => 1
+		[filtered] => 100.0
+		[Extra] => Using index
+[Suggestions]:
+	[Table: billable_ideas]:
+		[Passed]:
+		[Warning]:
+			FUll SCAN detected on table billable_ideas -> type: ALL
+	[Table: users]:
+		[Passed]:
+			No full scan on table users -> type: eq_ref
+			Indexed key PRIMARY used for table users -> type: eq_ref
+		[Warning]:
+
+========================================================
+========================================================
+[File name]: Billableideasmodel.php
+[Function name]: getBillableIdeas
+[Duration]: 0.008376s
+[Raw query]:
+Line 0:  SELECT `bi`.*, `u`.`email`, `u`.`first_name`, `u`.`last_name`, `u`.`id_district_manager`, `u`.`zone`, `dsm`.`dsm_name`
+Line 1:  FROM `billable_ideas` as `bi`
+Line 2:  JOIN `users` as `u` ON `u`.`id` = `bi`.`id_user`
+Line 3:  LEFT JOIN `district_managers` as `dsm` ON `dsm`.`id` = `u`.`id_district_manager`
+Line 4:  WHERE DATE(bi.created_at) >= '2000/08/17'
+Line 5:  AND DATE(bi.created_at) <= '2010/08/17'
+Line 6:  ORDER BY `bi`.`created_at` DESC
+Line 7:  LIMIT 100
+Line 8: 
+[Query execution result]:
+	[Table: billable_ideas]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => bi
+		[partitions] => None
+		[type] => ALL
+		[possible_keys] => None
+		[key] => None
+		[key_len] => None
+		[ref] => None
+		[rows] => 95164
+		[filtered] => 100.0
+		[Extra] => Using where; Using filesort
+	[Table: users]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => u
+		[partitions] => None
+		[type] => eq_ref
+		[possible_keys] => PRIMARY
+		[key] => PRIMARY
+		[key_len] => 4
+		[ref] => connectcare.bi.id_user
+		[rows] => 1
+		[filtered] => 100.0
+		[Extra] => None
+	[Table: district_managers]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => dsm
+		[partitions] => None
+		[type] => eq_ref
+		[possible_keys] => PRIMARY
+		[key] => PRIMARY
+		[key_len] => 4
+		[ref] => connectcare.u.id_district_manager
+		[rows] => 1
+		[filtered] => 100.0
+		[Extra] => None
+[Suggestions]:
+	[Table: billable_ideas]:
+		[Passed]:
+		[Warning]:
+			FUll SCAN detected on table billable_ideas -> type: ALL
+	[Table: users]:
+		[Passed]:
+			No full scan on table users -> type: eq_ref
+			Indexed key PRIMARY used for table users -> type: eq_ref
+		[Warning]:
+	[Table: district_managers]:
+		[Passed]:
+			No full scan on table district_managers -> type: eq_ref
+			Indexed key PRIMARY used for table district_managers -> type: eq_ref
+		[Warning]:
+
+========================================================
+========================================================
+[File name]: Customer.php
+[Function name]: getCustomer_testByLoginId
+[Duration]: 0.000371s
+[Raw query]:
+Line 0:  SELECT *
+Line 1:  FROM `customers`
+Line 2:  WHERE `id` IN('')
+Line 3: 
+[Query execution result]:
+	[Table: None]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => None
+		[partitions] => None
+		[type] => None
+		[possible_keys] => None
+		[key] => None
+		[key_len] => None
+		[ref] => None
+		[rows] => None
+		[filtered] => None
+		[Extra] => no matching row in const table
+[Suggestions]:
+None
+========================================================
+========================================================
+[File name]: Customer.php
+[Function name]: AccountIsEnable
+[Duration]: 0.00366525s
+[Raw query]:
+Line 0:  SELECT *
+Line 1:  FROM `customers`
+Line 2:  WHERE `account_number` IN('')
+Line 3:  AND `is_enable` = '1'
+Line 4: 
+[Query execution result]:
+	[Table: None]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => None
+		[partitions] => None
+		[type] => None
+		[possible_keys] => None
+		[key] => None
+		[key_len] => None
+		[ref] => None
+		[rows] => None
+		[filtered] => None
+		[Extra] => no matching row in const table
+[Suggestions]:
+None
+========================================================
+========================================================
+[File name]: Customer.php
+[Function name]: getCurrentagreementType
+[Duration]: 0.075269s
+[Raw query]:
+Line 0:  SELECT `ca`.`entitlementname`, `DEO`.`mlink_entitlement_type`
+Line 1:  FROM `customers_agreements` `ca`
+Line 2:  JOIN `customers` as `c` ON `ca`.`agreement_number` = `c`.`agreement_number`
+Line 3:  JOIN `devices` as `d` ON `d`.`account_number` = `c`.`account_number`
+Line 4:  LEFT JOIN `device_entitlement_override` as `DEO` ON `DEO`.`device_serial` = `d`.`serial` OR `DEO`.`device_serial` = ''
+Line 5:  WHERE (`ca`.`accountnumber` = '' AND `d`.`serial` = '' )
+Line 6:  AND (`ca`.`entitlementname` != 'SPM_TSU' OR `DEO`.`mlink_entitlement_type` != 'SPM_TSU')
+Line 7: 
+[Query execution result]:
+	[Table: customers]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => c
+		[partitions] => None
+		[type] => ALL
+		[possible_keys] => account_number
+		[key] => None
+		[key_len] => None
+		[ref] => None
+		[rows] => 1
+		[filtered] => 100.0
+		[Extra] => None
+	[Table: customers_agreements]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => ca
+		[partitions] => None
+		[type] => ref
+		[possible_keys] => accountnumber
+		[key] => accountnumber
+		[key_len] => 8
+		[ref] => const
+		[rows] => 1
+		[filtered] => 10.0
+		[Extra] => Using index condition; Using where
+	[Table: devices]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => d
+		[partitions] => None
+		[type] => eq_ref
+		[possible_keys] => unique_index,serial
+		[key] => unique_index
+		[key_len] => 110
+		[ref] => const,connectcare.c.account_number
+		[rows] => 1
+		[filtered] => 100.0
+		[Extra] => Using index
+	[Table: device_entitlement_override]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => DEO
+		[partitions] => None
+		[type] => ref
+		[possible_keys] => device_serial
+		[key] => device_serial
+		[key_len] => 102
+		[ref] => const
+		[rows] => 1
+		[filtered] => 100.0
+		[Extra] => Using where
+[Suggestions]:
+	[Table: customers]:
+		[Passed]:
+		[Warning]:
+			FUll SCAN detected on table customers -> type: ALL
+	[Table: customers_agreements]:
+		[Passed]:
+			Indexed key accountnumber used for table customers_agreements -> type: ref
+		[Warning]:
+			FUll SCAN detected on table customers_agreements -> type: ref
+	[Table: devices]:
+		[Passed]:
+			No full scan on table devices -> type: eq_ref
+			Indexed key unique_index used for table devices -> type: eq_ref
+		[Warning]:
+	[Table: device_entitlement_override]:
+		[Passed]:
+			Indexed key device_serial used for table device_entitlement_override -> type: ref
+		[Warning]:
+			FUll SCAN detected on table device_entitlement_override -> type: ref
+
+========================================================
+========================================================
+[File name]: Customer.php
+[Function name]: getCustomer_testByAccNo
+[Duration]: 0.00071s
+[Raw query]:
+Line 0:  SELECT *
+Line 1:  FROM `customers`
+Line 2:  WHERE `account_number` IN('')
+Line 3: 
+[Query execution result]:
+	[Table: None]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => None
+		[partitions] => None
+		[type] => None
+		[possible_keys] => None
+		[key] => None
+		[key_len] => None
+		[ref] => None
+		[rows] => None
+		[filtered] => None
+		[Extra] => no matching row in const table
+[Suggestions]:
+None
+========================================================
+========================================================
+[File name]: Customer.php
+[Function name]: AccountIsSoftDeleted
+[Duration]: 0.002118s
+[Raw query]:
+Line 0:  SELECT *
+Line 1:  FROM `customers`
+Line 2:  WHERE `account_number` IN('')
+Line 3:  AND `soft_delete` = '0'
+Line 4: 
+[Query execution result]:
+	[Table: None]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => None
+		[partitions] => None
+		[type] => None
+		[possible_keys] => None
+		[key] => None
+		[key_len] => None
+		[ref] => None
+		[rows] => None
+		[filtered] => None
+		[Extra] => no matching row in const table
+[Suggestions]:
+None
+========================================================
+========================================================
+[File name]: Customer.php
+[Function name]: getAccountAdmin
+[Duration]: 0.00411275s
+[Raw query]:
+Line 0:  SELECT *
+Line 1:  FROM `users`
+Line 2:  LEFT JOIN `customers` ON `find_in_set`(customers.account_number ,CONVERT(replace(replace(replace(replace(replace(replace(JSON_SEARCH(account_roles, 'all', '1'),'"',''),'[',''),']',''),'$.',''),' ',''),'\\',''), CHAR)) AND `users`.`role` = 1
+Line 3:  WHERE JSON_CONTAINS(json_extract(account_roles,'$[0].*'), '[1]')
+Line 4:  AND `customers`.`id` = ''
+Line 5: 
+[Query execution result]:
+	[Table: None]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => None
+		[partitions] => None
+		[type] => None
+		[possible_keys] => None
+		[key] => None
+		[key_len] => None
+		[ref] => None
+		[rows] => None
+		[filtered] => None
+		[Extra] => no matching row in const table
+[Suggestions]:
+None
+========================================================
+========================================================
+[File name]: Customer.php
+[Function name]: getCustomer_testsForAdmin
+[Duration]: 0.00077s
+[Raw query]:
+Line 0:  SELECT *
+Line 1:  FROM `customers`
+Line 2:  WHERE `soft_delete` != '1'
+Line 3: 
+[Query execution result]:
+	[Table: customers]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => customers
+		[partitions] => None
+		[type] => ALL
+		[possible_keys] => None
+		[key] => None
+		[key_len] => None
+		[ref] => None
+		[rows] => 1
+		[filtered] => 100.0
+		[Extra] => Using where
+[Suggestions]:
+	[Table: customers]:
+		[Passed]:
+		[Warning]:
+			FUll SCAN detected on table customers -> type: ALL
+
+========================================================
+========================================================
+[File name]: Customer.php
+[Function name]: getDepartments
+[Duration]: 0.0020225s
+[Raw query]:
+Line 0:  SELECT group_concat(departments) as department_list
+Line 1:  FROM `customers`
+Line 2:  WHERE `id` IN('')
+Line 3: 
+[Query execution result]:
+	[Table: None]:
+		[id] => 1
+		[select_type] => SIMPLE
+		[table] => None
+		[partitions] => None
+		[type] => None
+		[possible_keys] => None
+		[key] => None
+		[key_len] => None
+		[ref] => None
+		[rows] => None
+		[filtered] => None
+		[Extra] => no matching row in const table
+[Suggestions]:
+None
+========================================================
+========================================================
+[File name]: Customer.php
+[Function name]: getEntitlementTypes
+[Duration]: 0.00071375s
+[Raw query]:
+Line 0:  SELECT `et`.`dashboard_access`
+Line 1:  FROM `customers` `c`
+Line 2:  LEFT JOIN `customers_agreements` `ca` ON `c`.`account_number` = `ca`.`accountnumber`
+Line 3:  LEFT JOIN `entitlement_types` `et` ON `ca`.`steentitlementtype` = `et`.`entitlement_type`
+Line 4:  WHERE `c`.`account_number` IN (1)
+Line 5:  AND `ca`.`enddate` = (SELECT MAX(enddate) FROM customers_agreements AS B WHERE NOW() BETWEEN B.startdate AND B.enddate AND `CA`.`accountnumber` = `B`.`accountnumber`)
+Line 6: 
+[Query execution result]:
+	[Table: None]:
+		[id] => 1
+		[select_type] => PRIMARY
+		[table] => None
+		[partitions] => None
+		[type] => None
+		[possible_keys] => None
+		[key] => None
+		[key_len] => None
+		[ref] => None
+		[rows] => None
+		[filtered] => None
+		[Extra] => no matching row in const table
+	[Table: None]:
+		[id] => 2
+		[select_type] => SUBQUERY
+		[table] => None
+		[partitions] => None
+		[type] => None
+		[possible_keys] => None
+		[key] => None
+		[key_len] => None
+		[ref] => None
+		[rows] => None
+		[filtered] => None
+		[Extra] => Not optimized, outer query is empty
+[Suggestions]:
+None
+========================================================
+========================================================
+[File name]: Customer.php
+[Function name]: getCustomer_testID
+[Duration]: 0.002276s
+[Raw query]:
+Line 0:  SELECT GROUP_CONCAT(c.id) as customer_id, GROUP_CONCAT(c.account_number) as account_number
+Line 1:  FROM `customers` `c`
+Line 2:  LEFT JOIN `customers_agreements` `ca` ON `c`.`account_number` != `ca`.`accountnumber`
+Line 3:  LEFT JOIN `entitlement_types` `et` ON `ca`.`steentitlementtype` != `et`.`entitlement_type`
+Line 4:  WHERE `ca`.`enddate` != (SELECT MAX(enddate) FROM customers_agreements AS B WHERE NOW() BETWEEN B.startdate AND B.enddate AND `CA`.`accountnumber` = `B`.`accountnumber`)
+Line 5:  AND REPLACE(json_extract(et.dashboard_access, '$.1'),'"','') = 1
+Line 6:  AND `account_number` IN('1')
+Line 7: 
+[Query execution result]:
+	[Table: None]:
+		[id] => 1
+		[select_type] => PRIMARY
+		[table] => None
+		[partitions] => None
+		[type] => None
+		[possible_keys] => None
+		[key] => None
+		[key_len] => None
+		[ref] => None
+		[rows] => None
+		[filtered] => None
+		[Extra] => no matching row in const table
+	[Table: None]:
+		[id] => 2
+		[select_type] => DEPENDENT SUBQUERY
+		[table] => B
+		[partitions] => None
+		[type] => ref
+		[possible_keys] => accountnumber
+		[key] => accountnumber
+		[key_len] => 8
+		[ref] => connectcare.ca.accountnumber
+		[rows] => 1
+		[filtered] => 11.11
+		[Extra] => Using where
+[Suggestions]:
+	[Table: None]:
+		[Passed]:
+			Indexed key accountnumber used for table None -> type: ref
+		[Warning]:
+			FUll SCAN detected on table None -> type: ref
+
+========================================================
