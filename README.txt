@@ -43,7 +43,7 @@ Second, when the .php file is ready, execute the following command:
 > python root\...\generate_report.py root\...\OG_file.php
 
 The report will then be generated to 
-path = r"C:\Users\yfeng\Steris\cc-portal\query_tests\audit_results.txt"
+path = r"ROOT\query_tests\audit_results.txt"
 which is the default path.
 
 
