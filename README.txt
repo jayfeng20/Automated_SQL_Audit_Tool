@@ -1,3 +1,5 @@
+![Snake animation](https://github.com/jayfeng20/Automated_SQL_Audit_Tool/blob/output/github-contribution-grid-snake.svg)
+
 Overall architecture:
 
 [.php] files -> original php files that have all the classes, functions and queries
